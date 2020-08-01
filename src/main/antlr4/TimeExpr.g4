@@ -13,16 +13,18 @@ stat: expr NEWLINE          # printExpr
  | INTERVAL                                     # interval
  | ID                                           # id
  | INT                                          # int
- | '(' expr ')'               # parens
+ | '(' expr ')'                                 # parens
  ;
 TIME:  F_TIME ;
 DATE:   F_DATE ;
 DATETIME:  F_DATE 'T' F_TIME ;
-INTERVAL:  INT UNIT('_'INT UNIT)* ;
-
+//INTERVAL:  INT UNIT('_'?INT UNIT)* ;
+INTERVAL:  PT[0-9]+UNIT([0-9]+UNIT)*;
 //fragment F_INTERVAL: [0-9]+ F_UNIT ([0-9]+ F_UNIT)+;
 
-UNIT: 'microsecond' | 'millisecond' | 'second' | 'minute' |  'hour'  | 'day'  | 'week'| 'month' | 'year'| 'decade' | 'century' | 'millennium';
+//UNIT: 'microsecond' | 'millisecond' | 'second' | 'minute' |  'hour'  | 'day'  | 'week'| 'month' | 'year'| 'decade' | 'century' | 'millennium';
+PT:[Pp][Tt];
+UNIT:[Dd]|[Hh]|[Mm]|[Ss];
 
 fragment F_TIME: [0-9]?[0-9] COLON [0-9][0-9] (COLON [0-9][0-9] | COLON [0-9][0-9]'.'[0-9][0-9][0-9])?;
 fragment F_DATE: [0-9][0-9][0-9][0-9] '-' [0-9][0-9] '-' [0-9][0-9];
