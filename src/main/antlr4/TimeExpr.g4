@@ -10,16 +10,22 @@ stat: expr NEWLINE          # printExpr
  | DATETIME                                     # datetime
  | DATE                                         # date
  | TIME                                         # time
+ | INTERVAL                                     # interval
  | ID                                           # id
  | INT                                          # int
  | '(' expr ')'               # parens
  ;
-TIME: QUOTE FTIME QUOTE;
-DATE:  QUOTE FDATE QUOTE;
-DATETIME: QUOTE FDATE 'T' FTIME QUOTE;
+TIME:  F_TIME ;
+DATE:   F_DATE ;
+DATETIME:  F_DATE 'T' F_TIME ;
+INTERVAL:  INT UNIT('_'INT UNIT)* ;
 
-fragment FTIME: [0-9]?[0-9] COLON [0-9][0-9] (COLON [0-9][0-9] | COLON [0-9][0-9]'.'[0-9][0-9][0-9])?;
-fragment FDATE: [0-9][0-9][0-9][0-9] '-' [0-9][0-9] '-' [0-9][0-9];
+//fragment F_INTERVAL: [0-9]+ F_UNIT ([0-9]+ F_UNIT)+;
+
+UNIT: 'microsecond' | 'millisecond' | 'second' | 'minute' |  'hour'  | 'day'  | 'week'| 'month' | 'year'| 'decade' | 'century' | 'millennium';
+
+fragment F_TIME: [0-9]?[0-9] COLON [0-9][0-9] (COLON [0-9][0-9] | COLON [0-9][0-9]'.'[0-9][0-9][0-9])?;
+fragment F_DATE: [0-9][0-9][0-9][0-9] '-' [0-9][0-9] '-' [0-9][0-9];
 
 
 //RESERVED: 'date' | 'time' | 'datetime' | 'interval';
