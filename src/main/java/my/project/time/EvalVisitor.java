@@ -46,6 +46,7 @@ public class EvalVisitor extends my.project.time.TimeExprBaseVisitor<Result> {
         Result left = visit(ctx.expr(0));
         Result right = visit(ctx.expr(1));
         final int opType = ctx.op.getType(); //TimeExprParser.ADD, TimeExprParser.SUB
+        return left.apply(opType, right);
     }
 
 
@@ -63,7 +64,7 @@ public class EvalVisitor extends my.project.time.TimeExprBaseVisitor<Result> {
 
     @Override
     public Result visitInt(my.project.time.TimeExprParser.IntContext ctx) {
-        return new Result(Type.INT, Integer.valueOf(ctx.INT().getText()));
+        return Type.INT.parse(ctx.INT().getText());
     }
 
     @Override
